@@ -1,0 +1,12 @@
+..\..\output\app_hooks.o: ..\..\Middlewares\uC-OS2\uC-OS2\Cfg\Template\app_hooks.c
+..\..\output\app_hooks.o: ..\..\Middlewares\uC-OS2\uC-OS2\Source\os.h
+..\..\output\app_hooks.o: ..\..\Middlewares\uC-OS2\uC-OS2\Source\ucos_ii.h
+..\..\output\app_hooks.o: ..\..\Middlewares\uC-OS2\uC-OS2\Cfg\Template\app_cfg.h
+..\..\output\app_hooks.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+..\..\output\app_hooks.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\..\output\app_hooks.o: ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\ARM\cpu.h
+..\..\output\app_hooks.o: ..\..\Middlewares\uC-OS2\uC-CPU\cpu_def.h
+..\..\output\app_hooks.o: ..\..\Middlewares\uC-OS2\uC-CPU\Cfg\Template\cpu_cfg.h
+..\..\output\app_hooks.o: ..\..\Middlewares\uC-OS2\uC-OS2\Cfg\Template\os_cfg.h
+..\..\output\app_hooks.o: ..\..\Middlewares\uC-OS2\uC-OS2\Ports\ARM-Cortex-M\ARMv7-M\ARM\os_cpu.h
+..\..\output\app_hooks.o: ..\..\Middlewares\uC-OS2\uC-OS2\Source\os_trace.h

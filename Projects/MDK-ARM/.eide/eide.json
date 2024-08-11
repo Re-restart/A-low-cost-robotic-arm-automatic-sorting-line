@@ -1,0 +1,364 @@
+{
+  "name": "atk_f103",
+  "type": "ARM",
+  "dependenceList": [],
+  "srcDirs": [],
+  "virtualFolder": {
+    "name": "<virtual_root>",
+    "files": [],
+    "folders": [
+      {
+        "name": "Startup",
+        "files": [
+          {
+            "path": "../../Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/arm/startup_stm32f103xe.s"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "User",
+        "files": [
+          {
+            "path": "../../User/main.c"
+          },
+          {
+            "path": "../../Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c"
+          },
+          {
+            "path": "../../User/stm32f1xx_it.c"
+          },
+          {
+            "path": "../../User/uc-os2_demo.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "Drivers",
+        "files": [],
+        "folders": [
+          {
+            "name": "BSP",
+            "files": [
+              {
+                "path": "../../Drivers/BSP/LED/led.c"
+              },
+              {
+                "path": "../../Drivers/BSP/KEY/key.c"
+              },
+              {
+                "path": "../../Drivers/BSP/DIR/DIR.c"
+              },
+              {
+                "path": "../../Drivers/BSP/RTC/rtc.c"
+              },
+              {
+                "path": "../../Drivers/BSP/SPI/spi.c"
+              },
+              {
+                "path": "../../Drivers/BSP/TIMER/gtim.c"
+              },
+              {
+                "path": "../../Drivers/BSP/Speed/speed.c"
+              },
+              {
+                "path": "../../Drivers/BSP/IIC/i2c.c"
+              },
+              {
+                "path": "../../Drivers/BSP/RELAY/relay.c"
+              },
+              {
+                "path": "../../Drivers/BSP/OLED/oled.c"
+              },
+              {
+                "path": "../../Drivers/BSP/STEPMOTER/littlemoter.c"
+              },
+              {
+                "path": "../../Drivers/BSP/START/start.c"
+              },
+              {
+                "path": "../../Drivers/BSP/TRANS/trans.c"
+              },
+              {
+                "path": "../../Drivers/BSP/DISTANCE/distance.c"
+              }
+            ],
+            "folders": []
+          },
+          {
+            "name": "SYSTEM",
+            "files": [
+              {
+                "path": "../../Drivers/SYSTEM/delay/delay.c"
+              },
+              {
+                "path": "../../Drivers/SYSTEM/sys/sys.c"
+              },
+              {
+                "path": "../../Drivers/SYSTEM/usart/usart.c"
+              }
+            ],
+            "folders": []
+          },
+          {
+            "name": "STM32F1xx_HAL_Driver",
+            "files": [
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_usart.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sram.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_fsmc.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dac.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dac_ex.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sd.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_sdmmc.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc.c"
+              },
+              {
+                "path": "../../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc_ex.c"
+              }
+            ],
+            "folders": []
+          }
+        ]
+      },
+      {
+        "name": "Middlewares",
+        "files": [],
+        "folders": [
+          {
+            "name": "MALLOC",
+            "files": [
+              {
+                "path": "../../Middlewares/MALLOC/malloc.c"
+              }
+            ],
+            "folders": []
+          },
+          {
+            "name": "uC-OS2",
+            "files": [],
+            "folders": [
+              {
+                "name": "BSP",
+                "files": [
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-CPU/BSP/Template/bsp_cpu.c"
+                  }
+                ],
+                "folders": []
+              },
+              {
+                "name": "CPU",
+                "files": [
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-CPU/ARM-Cortex-M/ARMv7-M/ARM/cpu_a.asm"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-CPU/ARM-Cortex-M/ARMv7-M/cpu_c.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-CPU/cpu_core.c"
+                  }
+                ],
+                "folders": []
+              },
+              {
+                "name": "LIB",
+                "files": [
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-LIB/lib_ascii.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-LIB/lib_math.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-LIB/lib_mem.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-LIB/lib_str.c"
+                  }
+                ],
+                "folders": []
+              },
+              {
+                "name": "OS2",
+                "files": [
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Cfg/Template/app_hooks.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Ports/ARM-Cortex-M/ARMv7-M/ARM/os_cpu_a.asm"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Ports/ARM-Cortex-M/ARMv7-M/ARM/os_dbg.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Ports/ARM-Cortex-M/ARMv7-M/os_cpu_c.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Source/os_core.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Source/os_flag.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Source/os_mbox.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Source/os_mem.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Source/os_mutex.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Source/os_q.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Source/os_sem.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Source/os_task.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Source/os_time.c"
+                  },
+                  {
+                    "path": "../../Middlewares/uC-OS2/uC-OS2/Source/os_tmr.c"
+                  }
+                ],
+                "folders": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "outDir": "build",
+  "deviceName": "STM32F103ZE",
+  "packDir": ".pack/Keil/STM32F1xx_DFP.2.3.0",
+  "miscInfo": {
+    "uid": "00484aab486cd020ae1f619eba550417"
+  },
+  "targets": {
+    "uC-OS2": {
+      "excludeList": [],
+      "toolchain": "GCC",
+      "compileConfig": {
+        "cpuType": "Cortex-M3",
+        "floatingPointHardware": "none",
+        "scatterFilePath": "<YOUR_LINKER_SCRIPT>.lds",
+        "useCustomScatterFile": true,
+        "storageLayout": {
+          "RAM": [],
+          "ROM": []
+        },
+        "options": "null"
+      },
+      "uploader": "JLink",
+      "uploadConfig": {
+        "bin": "",
+        "baseAddr": "",
+        "cpuInfo": {
+          "vendor": "ST",
+          "cpuName": "STM32F103ZE"
+        },
+        "proType": 1,
+        "speed": 8000,
+        "otherCmds": ""
+      },
+      "uploadConfigMap": {},
+      "custom_dep": {
+        "name": "default",
+        "incList": [
+          "../../User",
+          "../../Drivers",
+          "../../Drivers/CMSIS/Device/ST/STM32F1xx/Include",
+          "../../Drivers/CMSIS/Include",
+          "../../Drivers/STM32F1xx_HAL_Driver/Inc",
+          "../../Middlewares",
+          "../../Middlewares/uC-OS2/uC-CPU/ARM-Cortex-M/ARMv7-M/ARM",
+          "../../Middlewares/uC-OS2/uC-CPU/Cfg/Template",
+          "../../Middlewares/uC-OS2/uC-CPU",
+          "../../Middlewares/uC-OS2/uC-LIB/Cfg/Template",
+          "../../Middlewares/uC-OS2/uC-LIB",
+          "../../Middlewares/uC-OS2/uC-OS2/Cfg/Template",
+          "../../Middlewares/uC-OS2/uC-OS2/Ports/ARM-Cortex-M/ARMv7-M/ARM",
+          "../../Middlewares/uC-OS2/uC-OS2/Source",
+          ".cmsis/include",
+          "RTE/_uC-OS2"
+        ],
+        "libList": [],
+        "defineList": [
+          "USE_HAL_DRIVER",
+          "STM32F103xE",
+          "STM32F10X_HD"
+        ]
+      }
+    }
+  },
+  "version": "3.4"
+}

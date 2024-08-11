@@ -1,0 +1,11 @@
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-CPU\cpu_core.c
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-CPU\cpu_core.h
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\ARM\cpu.h
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-CPU\cpu_def.h
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-CPU\Cfg\Template\cpu_cfg.h
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-LIB\lib_def.h
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-LIB\lib_mem.h
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-CPU\cpu_core.h
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-LIB\Cfg\Template\lib_cfg.h
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-LIB\lib_str.h
+..\..\output\cpu_core.o: ..\..\Middlewares\uC-OS2\uC-LIB\lib_ascii.h

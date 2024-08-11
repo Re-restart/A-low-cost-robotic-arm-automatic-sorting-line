@@ -1,0 +1,578 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;*******************************************************
+                       *************************************************
+    2 00000000         ;                                               uC/CPU
+    3 00000000         ;                                    CPU CONFIGURATION &
+                        PORT LAYER
+    4 00000000         ;
+    5 00000000         ;                    Copyright 2004-2021 Silicon Laborat
+                       ories Inc. www.silabs.com
+    6 00000000         ;
+    7 00000000         ;                                 SPDX-License-Identifie
+                       r: APACHE-2.0
+    8 00000000         ;
+    9 00000000         ;               This software is subject to an open sour
+                       ce license and is distributed by
+   10 00000000         ;                Silicon Laboratories Inc. pursuant to t
+                       he terms of the Apache License,
+   11 00000000         ;                    Version 2.0 available at www.apache
+                       .org/licenses/LICENSE-2.0.
+   12 00000000         ;
+   13 00000000         ;*******************************************************
+                       *************************************************
+   14 00000000         
+   15 00000000         ;*******************************************************
+                       *************************************************
+   16 00000000         ;
+   17 00000000         ;                                            CPU PORT FI
+                       LE
+   18 00000000         ;
+   19 00000000         ;                                               ARMv7-M
+   20 00000000         ;                                           ARM C Compil
+                       er
+   21 00000000         ;
+   22 00000000         ; Filename : cpu_a.asm
+   23 00000000         ; Version  : V1.32.01
+   24 00000000         ;*******************************************************
+                       *************************************************
+   25 00000000         ; Note(s)  : This port supports the ARM Cortex-M3, Corte
+                       x-M4 and Cortex-M7 architectures.
+   26 00000000         ;*******************************************************
+                       *************************************************
+   27 00000000         
+   28 00000000         
+   29 00000000         ;*******************************************************
+                       *************************************************
+   30 00000000         ;                                           PUBLIC FUNCT
+                       IONS
+   31 00000000         ;*******************************************************
+                       *************************************************
+   32 00000000         
+   33 00000000                 EXPORT           CPU_IntDis
+   34 00000000                 EXPORT           CPU_IntEn
+   35 00000000         
+   36 00000000                 EXPORT           CPU_SR_Save
+   37 00000000                 EXPORT           CPU_SR_Restore
+   38 00000000         
+   39 00000000                 EXPORT           CPU_WaitForInt
+   40 00000000                 EXPORT           CPU_WaitForExcept
+   41 00000000         
+   42 00000000         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   43 00000000                 EXPORT           CPU_CntLeadZeros
+   44 00000000                 EXPORT           CPU_CntTrailZeros
+   45 00000000                 EXPORT           CPU_RevBits
+   46 00000000         
+   47 00000000         
+   48 00000000         ;*******************************************************
+                       *************************************************
+   49 00000000         ;                                      CODE GENERATION D
+                       IRECTIVES
+   50 00000000         ;*******************************************************
+                       *************************************************
+   51 00000000         
+   52 00000000                 AREA             |.text|, CODE, READONLY, ALIGN=
+2
+   53 00000000                 THUMB
+   54 00000000                 REQUIRE8
+   55 00000000                 PRESERVE8
+   56 00000000         
+   57 00000000         ;*******************************************************
+                       *************************************************
+   58 00000000         ;                                    DISABLE and ENABLE 
+                       INTERRUPTS
+   59 00000000         ;
+   60 00000000         ; Description : Disable/Enable interrupts.
+   61 00000000         ;
+   62 00000000         ; Prototypes  : void  CPU_IntDis(void);
+   63 00000000         ;               void  CPU_IntEn (void);
+   64 00000000         ;*******************************************************
+                       *************************************************
+   65 00000000         
+   66 00000000         CPU_IntDis
+   67 00000000 B672            CPSID            I
+   68 00000002 4770            BX               LR
+   69 00000004         
+   70 00000004         
+   71 00000004         CPU_IntEn
+   72 00000004 B662            CPSIE            I
+   73 00000006 4770            BX               LR
+   74 00000008         
+   75 00000008         
+   76 00000008         ;*******************************************************
+                       *************************************************
+   77 00000008         ;                                      CRITICAL SECTION 
+                       FUNCTIONS
+   78 00000008         ;
+   79 00000008         ; Description : Disable/Enable Kernel aware interrupts b
+                       y preserving the state of BASEPRI.  Generally speaking,
+   80 00000008         ;               the state of the BASEPRI interrupt excep
+                       tion processing is stored in the local variable
+   81 00000008         ;               'cpu_sr' & Kernel Aware interrupts are t
+                       hen disabled ('cpu_sr' is allocated in all functions
+   82 00000008         ;               that need to disable Kernel aware interr
+                       upts). The previous BASEPRI interrupt state is restored
+   83 00000008         ;               by copying 'cpu_sr' into the BASEPRI reg
+                       ister.
+   84 00000008         ;
+   85 00000008         ; Prototypes  : CPU_SR  CPU_SR_Save   (CPU_SR  new_basep
+                       ri);
+   86 00000008         ;               void    CPU_SR_Restore(CPU_SR  cpu_sr);
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   87 00000008         ;
+   88 00000008         ; Note(s)     : (1) These functions are used in general 
+                       like this :
+   89 00000008         ;
+   90 00000008         ;                       void  Task (void  *p_arg)
+   91 00000008         ;                       {
+   92 00000008         ;                           CPU_SR_ALLOC();             
+                               /* Allocate storage for CPU status register */
+   93 00000008         ;                               :
+   94 00000008         ;                               :
+   95 00000008         ;                           CPU_CRITICAL_ENTER();       
+                               /* cpu_sr = CPU_SR_Save();                  */
+   96 00000008         ;                               :
+   97 00000008         ;                               :
+   98 00000008         ;                           CPU_CRITICAL_EXIT();        
+                               /* CPU_SR_Restore(cpu_sr);                  */
+   99 00000008         ;                               :
+  100 00000008         ;                       }
+  101 00000008         ;
+  102 00000008         ;               (2) Increasing priority using a write to
+                        BASEPRI does not take effect immediately.
+  103 00000008         ;                   (a) IMPLICATION  This erratum means 
+                       that the instruction after an MSR to boost BASEPRI
+  104 00000008         ;                       might incorrectly be preempted b
+                       y an insufficient high priority exception.
+  105 00000008         ;
+  106 00000008         ;                   (b) WORKAROUND  The MSR to boost BAS
+                       EPRI can be replaced by the following code sequence:
+  107 00000008         ;
+  108 00000008         ;                       CPSID i
+  109 00000008         ;                       MSR to BASEPRI
+  110 00000008         ;                       DSB
+  111 00000008         ;                       ISB
+  112 00000008         ;                       CPSIE i
+  113 00000008         ;*******************************************************
+                       *************************************************
+  114 00000008         
+  115 00000008         CPU_SR_Save
+  116 00000008 B672            CPSID            I           ; Cortex-M7 errata 
+                                                            notice. See Note #2
+                                                            
+  117 0000000A B402            PUSH             {R1}
+  118 0000000C F3EF 8111       MRS              R1, BASEPRI
+  119 00000010 F380 8811       MSR              BASEPRI, R0
+  120 00000014 F3BF 8F4F       DSB
+  121 00000018 F3BF 8F6F       ISB
+  122 0000001C 4608            MOV              R0, R1
+  123 0000001E BC02            POP              {R1}
+  124 00000020 B662            CPSIE            I
+  125 00000022 4770            BX               LR
+  126 00000024         
+  127 00000024         
+  128 00000024         CPU_SR_Restore
+  129 00000024 B672            CPSID            I           ; Cortex-M7 errata 
+                                                            notice. See Note #2
+                                                            
+  130 00000026 F380 8811       MSR              BASEPRI, R0
+  131 0000002A F3BF 8F4F       DSB
+  132 0000002E F3BF 8F6F       ISB
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+  133 00000032 B662            CPSIE            I
+  134 00000034 4770            BX               LR
+  135 00000036         
+  136 00000036         
+  137 00000036         ;*******************************************************
+                       *************************************************
+  138 00000036         ;                                         WAIT FOR INTER
+                       RUPT
+  139 00000036         ;
+  140 00000036         ; Description : Enters sleep state, which will be exited
+                        when an interrupt is received.
+  141 00000036         ;
+  142 00000036         ; Prototypes  : void  CPU_WaitForInt (void)
+  143 00000036         ;
+  144 00000036         ; Argument(s) : none.
+  145 00000036         ;*******************************************************
+                       *************************************************
+  146 00000036         
+  147 00000036         CPU_WaitForInt
+  148 00000036 BF30            WFI                          ; Wait for interrup
+                                                            t
+  149 00000038 4770            BX               LR
+  150 0000003A         
+  151 0000003A         
+  152 0000003A         ;*******************************************************
+                       *************************************************
+  153 0000003A         ;                                         WAIT FOR EXCEP
+                       TION
+  154 0000003A         ;
+  155 0000003A         ; Description : Enters sleep state, which will be exited
+                        when an exception is received.
+  156 0000003A         ;
+  157 0000003A         ; Prototypes  : void  CPU_WaitForExcept (void)
+  158 0000003A         ;
+  159 0000003A         ; Argument(s) : none.
+  160 0000003A         ;*******************************************************
+                       *************************************************
+  161 0000003A         
+  162 0000003A         CPU_WaitForExcept
+  163 0000003A BF20            WFE                          ; Wait for exceptio
+                                                            n
+  164 0000003C 4770            BX               LR
+  165 0000003E         
+  166 0000003E         
+  167 0000003E         ;*******************************************************
+                       *************************************************
+  168 0000003E         ;                                         CPU_CntLeadZer
+                       os()
+  169 0000003E         ;                                        COUNT LEADING Z
+                       EROS
+  170 0000003E         ;
+  171 0000003E         ; Description : Counts the number of contiguous, most-si
+                       gnificant, leading zero bits before the
+  172 0000003E         ;                   first binary one bit in a data value
+                       .
+  173 0000003E         ;
+  174 0000003E         ; Prototype   : CPU_DATA  CPU_CntLeadZeros(CPU_DATA  val
+                       );
+  175 0000003E         ;
+
+
+
+ARM Macro Assembler    Page 5 
+
+
+  176 0000003E         ; Argument(s) : val         Data value to count leading 
+                       zero bits.
+  177 0000003E         ;
+  178 0000003E         ; Return(s)   : Number of contiguous, most-significant, 
+                       leading zero bits in 'val'.
+  179 0000003E         ;
+  180 0000003E         ; Note(s)     : (1) (a) Supports 32-bit data value size 
+                       as configured by 'CPU_DATA' (see 'cpu.h
+  181 0000003E         ;                       CPU WORD CONFIGURATION  Note #1'
+                       ).
+  182 0000003E         ;
+  183 0000003E         ;                   (b) For 32-bit values :
+  184 0000003E         ;
+  185 0000003E         ;                             b31  b30  b29  ...  b04  b
+                       03  b02  b01  b00    # Leading Zeros
+  186 0000003E         ;                             ---  ---  ---       ---  -
+                       --  ---  ---  ---    ---------------
+  187 0000003E         ;                              1    x    x         x    
+                       x    x    x    x            0
+  188 0000003E         ;                              0    1    x         x    
+                       x    x    x    x            1
+  189 0000003E         ;                              0    0    1         x    
+                       x    x    x    x            2
+  190 0000003E         ;                              :    :    :         :    
+                       :    :    :    :            :
+  191 0000003E         ;                              :    :    :         :    
+                       :    :    :    :            :
+  192 0000003E         ;                              0    0    0         1    
+                       x    x    x    x           27
+  193 0000003E         ;                              0    0    0         0    
+                       1    x    x    x           28
+  194 0000003E         ;                              0    0    0         0    
+                       0    1    x    x           29
+  195 0000003E         ;                              0    0    0         0    
+                       0    0    1    x           30
+  196 0000003E         ;                              0    0    0         0    
+                       0    0    0    1           31
+  197 0000003E         ;                              0    0    0         0    
+                       0    0    0    0           32
+  198 0000003E         ;
+  199 0000003E         ;
+  200 0000003E         ;               (2) MUST be defined in 'cpu_a.asm' (or '
+                       cpu_c.c') if CPU_CFG_LEAD_ZEROS_ASM_PRESENT is
+  201 0000003E         ;                   #define'd in 'cpu_cfg.h' or 'cpu.h'.
+                       
+  202 0000003E         ;*******************************************************
+                       *************************************************
+  203 0000003E         
+  204 0000003E         CPU_CntLeadZeros
+  205 0000003E FAB0 F080       CLZ              R0, R0      ; Count leading zer
+                                                            os
+  206 00000042 4770            BX               LR
+  207 00000044         
+  208 00000044         
+  209 00000044         ;*******************************************************
+                       *************************************************
+  210 00000044         ;                                         CPU_CntTrailZe
+                       ros()
+  211 00000044         ;                                        COUNT TRAILING 
+
+
+
+ARM Macro Assembler    Page 6 
+
+
+                       ZEROS
+  212 00000044         ;
+  213 00000044         ; Description : Counts the number of contiguous, least-s
+                       ignificant, trailing zero bits before the
+  214 00000044         ;                   first binary one bit in a data value
+                       .
+  215 00000044         ;
+  216 00000044         ; Prototype   : CPU_DATA  CPU_CntTrailZeros(CPU_DATA  va
+                       l);
+  217 00000044         ;
+  218 00000044         ; Argument(s) : val         Data value to count trailing
+                        zero bits.
+  219 00000044         ;
+  220 00000044         ; Return(s)   : Number of contiguous, least-significant,
+                        trailing zero bits in 'val'.
+  221 00000044         ;
+  222 00000044         ; Note(s)     : (1) (a) Supports 32-bit data value size 
+                       as configured by 'CPU_DATA' (see 'cpu.h
+  223 00000044         ;                       CPU WORD CONFIGURATION  Note #1'
+                       ).
+  224 00000044         ;
+  225 00000044         ;                   (b) For 32-bit values :
+  226 00000044         ;
+  227 00000044         ;                             b31  b30  b29  b28  b27  .
+                       ..  b02  b01  b00    # Trailing Zeros
+  228 00000044         ;                             ---  ---  ---  ---  ---   
+                           ---  ---  ---    ----------------
+  229 00000044         ;                              x    x    x    x    x    
+                            x    x    1            0
+  230 00000044         ;                              x    x    x    x    x    
+                            x    1    0            1
+  231 00000044         ;                              x    x    x    x    x    
+                            1    0    0            2
+  232 00000044         ;                              :    :    :    :    :    
+                            :    :    :            :
+  233 00000044         ;                              :    :    :    :    :    
+                            :    :    :            :
+  234 00000044         ;                              x    x    x    x    1    
+                            0    0    0           27
+  235 00000044         ;                              x    x    x    1    0    
+                            0    0    0           28
+  236 00000044         ;                              x    x    1    0    0    
+                            0    0    0           29
+  237 00000044         ;                              x    1    0    0    0    
+                            0    0    0           30
+  238 00000044         ;                              1    0    0    0    0    
+                            0    0    0           31
+  239 00000044         ;                              0    0    0    0    0    
+                            0    0    0           32
+  240 00000044         ;
+  241 00000044         ;
+  242 00000044         ;               (2) MUST be defined in 'cpu_a.asm' (or '
+                       cpu_c.c') if CPU_CFG_TRAIL_ZEROS_ASM_PRESENT is
+  243 00000044         ;                   #define'd in 'cpu_cfg.h' or 'cpu.h'.
+                       
+  244 00000044         ;*******************************************************
+                       *************************************************
+  245 00000044         
+  246 00000044         CPU_CntTrailZeros
+
+
+
+ARM Macro Assembler    Page 7 
+
+
+  247 00000044 FA90 F0A0       RBIT             R0, R0      ; Reverse bits
+  248 00000048 FAB0 F080       CLZ              R0, R0      ; Count trailing ze
+                                                            ros
+  249 0000004C 4770            BX               LR
+  250 0000004E         
+  251 0000004E         
+  252 0000004E         ;*******************************************************
+                       *************************************************
+  253 0000004E         ;                                            CPU_RevBits
+                       ()
+  254 0000004E         ;                                            REVERSE BIT
+                       S
+  255 0000004E         ;
+  256 0000004E         ; Description : Reverses the bits in a data value.
+  257 0000004E         ;
+  258 0000004E         ; Prototypes  : CPU_DATA  CPU_RevBits(CPU_DATA  val);
+  259 0000004E         ;
+  260 0000004E         ; Argument(s) : val         Data value to reverse bits.
+  261 0000004E         ;
+  262 0000004E         ; Return(s)   : Value with all bits in 'val' reversed (s
+                       ee Note #1).
+  263 0000004E         ;
+  264 0000004E         ; Note(s)     : (1) The final, reversed data value for '
+                       val' is such that :
+  265 0000004E         ;
+  266 0000004E         ;                       'val's final bit  0       =  'va
+                       l's original bit  N
+  267 0000004E         ;                       'val's final bit  1       =  'va
+                       l's original bit (N - 1)
+  268 0000004E         ;                       'val's final bit  2       =  'va
+                       l's original bit (N - 2)
+  269 0000004E         ;
+  270 0000004E         ;                               ...                     
+                             ...
+  271 0000004E         ;
+  272 0000004E         ;                       'val's final bit (N - 2)  =  'va
+                       l's original bit  2
+  273 0000004E         ;                       'val's final bit (N - 1)  =  'va
+                       l's original bit  1
+  274 0000004E         ;                       'val's final bit  N       =  'va
+                       l's original bit  0
+  275 0000004E         ;*******************************************************
+                       *************************************************
+  276 0000004E         
+  277 0000004E         CPU_RevBits
+  278 0000004E FA90 F0A0       RBIT             R0, R0      ; Reverse bits
+  279 00000052 4770            BX               LR
+  280 00000054         
+  281 00000054         
+  282 00000054         ;*******************************************************
+                       *************************************************
+  283 00000054         ;                                     CPU ASSEMBLY PORT 
+                       FILE END
+  284 00000054         ;*******************************************************
+                       *************************************************
+  285 00000054         
+  286 00000054                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=..\..\output\cpu_a.d -o..\..\output\cpu_a.o -ID:\users\huawei\appd
+
+
+
+ARM Macro Assembler    Page 8 
+
+
+ata\local\Arm\Packs\Keil\STM32F1xx_DFP\2.4.1\Device\Include --predefine="__MICR
+OLIB SETA 1" --predefine="__UVISION_VERSION SETA 538" --predefine="STM32F10X_HD
+ SETA 1" --list=..\..\output\cpu_a.lst ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cort
+ex-M\ARMv7-M\ARM\cpu_a.asm
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.text 00000000
+
+Symbol: .text
+   Definitions
+      At line 52 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+   Uses
+      None
+Comment: .text unused
+CPU_CntLeadZeros 0000003E
+
+Symbol: CPU_CntLeadZeros
+   Definitions
+      At line 204 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\
+ARM\cpu_a.asm
+   Uses
+      At line 43 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+Comment: CPU_CntLeadZeros used once
+CPU_CntTrailZeros 00000044
+
+Symbol: CPU_CntTrailZeros
+   Definitions
+      At line 246 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\
+ARM\cpu_a.asm
+   Uses
+      At line 44 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+Comment: CPU_CntTrailZeros used once
+CPU_IntDis 00000000
+
+Symbol: CPU_IntDis
+   Definitions
+      At line 66 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+   Uses
+      At line 33 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+Comment: CPU_IntDis used once
+CPU_IntEn 00000004
+
+Symbol: CPU_IntEn
+   Definitions
+      At line 71 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+   Uses
+      At line 34 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+Comment: CPU_IntEn used once
+CPU_RevBits 0000004E
+
+Symbol: CPU_RevBits
+   Definitions
+      At line 277 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\
+ARM\cpu_a.asm
+   Uses
+      At line 45 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+Comment: CPU_RevBits used once
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+CPU_SR_Restore 00000024
+
+Symbol: CPU_SR_Restore
+   Definitions
+      At line 128 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\
+ARM\cpu_a.asm
+   Uses
+      At line 37 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+Comment: CPU_SR_Restore used once
+CPU_SR_Save 00000008
+
+Symbol: CPU_SR_Save
+   Definitions
+      At line 115 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\
+ARM\cpu_a.asm
+   Uses
+      At line 36 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+Comment: CPU_SR_Save used once
+CPU_WaitForExcept 0000003A
+
+Symbol: CPU_WaitForExcept
+   Definitions
+      At line 162 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\
+ARM\cpu_a.asm
+   Uses
+      At line 40 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+Comment: CPU_WaitForExcept used once
+CPU_WaitForInt 00000036
+
+Symbol: CPU_WaitForInt
+   Definitions
+      At line 147 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\
+ARM\cpu_a.asm
+   Uses
+      At line 39 in file ..\..\Middlewares\uC-OS2\uC-CPU\ARM-Cortex-M\ARMv7-M\A
+RM\cpu_a.asm
+Comment: CPU_WaitForInt used once
+10 symbols
+343 symbols in table
