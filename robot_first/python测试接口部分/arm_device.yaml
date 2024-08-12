@@ -1,0 +1,7 @@
+serial:
+  port: COM5|COM9     # 串口端口号，例如 COM3 (Windows) 或 /dev/ttyUSB0 (Linux)
+  baudrate: 115200   # 波特率，例如 9600, 115200 等
+  bytesize: 8      # 字节大小，常用值为 8
+  parity: N        # 奇偶校验，常用值为 N (无), E (偶), O (奇)
+  stopbits: 1      # 停止位，常用值为 1 或 2
+  timeout: 1       # 超时时间，单位为秒0
