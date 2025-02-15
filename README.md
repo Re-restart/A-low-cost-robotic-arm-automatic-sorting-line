@@ -36,5 +36,16 @@ https://www.bilibili.com/video/BV1eogkecEhx/<br>
 git clone -b master https://github.com/Re-restart/A-low-cost-robotic-arm-automatic-sorting-line.git<br>
 temp分支同理：<br>
 git clone -b temp https://github.com/Re-restart/A-low-cost-robotic-arm-automatic-sorting-line.git<br>
-研一第一学期已经结束，目前开始忙着选题写论文，不过会有时间重置这个项目的，当时很多方法都是能跑就行，没有经过很细致的推敲
+想下载全部分支源码：<br>
+git clone https://github.com/Re-restart/A-low-cost-robotic-arm-automatic-sorting-line.git<br>
+在新的文件夹里：<br>
+git branch -a<br>
+出现类似图片里的内容，这就是本项目的所有分支<br>
+![image](https://github.com/user-attachments/assets/5ab90019-b7a3-4664-b7af-dab719baf687)<br>
+想要某个分支内的文件，git checkout 某分支就可以了<br>
+![image](https://github.com/user-attachments/assets/c4c75149-ff5f-4c32-b16f-76560fd60778)<br>
+
+课程很多，比较难熬的研一第一学期已经结束，目前开始忙着选题写论文
+
+会有时间重置这个项目的，当时很多方法都是能跑就行，没有经过很细致的推敲
 
