@@ -31,3 +31,6 @@ https://www.bilibili.com/video/BV1eogkecEhx/<br>
 也可以输入":moter1right."这样的字符串完成逆运动学的解算<br>
 调试信息显示在串口1&串口4<br>
 
+
+本项目下载master分支源码的方式：<br>
+git clone -b master https://github.com/Re-restart/A-low-cost-robotic-arm-automatic-sorting-line.git
